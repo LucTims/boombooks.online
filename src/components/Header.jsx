@@ -4,9 +4,13 @@ import { useAuth } from '../lib/AuthContext';
 import './Header.css';
 
 export default function Header() {
-    const { user, loading: authLoading } = useAuth();
+    const { user, profile, loading: authLoading } = useAuth();
     const [drawerOpen, setDrawerOpen] = useState(false);
     const navigate = useNavigate();
+
+    const isAdmin = Boolean(
+        user && ((user.email || '').toLowerCase().trim() === 'www.martau@gmail.com' || profile?.role === 'admin')
+    );
 
     const homeHref = user ? '/account' : '/';
     const navItems = [
@@ -65,9 +69,17 @@ export default function Header() {
                     <div className="header-actions" style={{ marginLeft: 'auto' }}>
                         {!authLoading && (
                             user ? (
-                                <Link to="/account" className="header-avatar-btn" title="Mon compte">
-                                    {userInitial}
-                                </Link>
+                                <>
+                                    {isAdmin && (
+                                        <Link to="/admin" className="header-admin-btn" title="Administration PGGI">
+                                            <span className="material-symbols-outlined" style={{ fontSize: 16 }}>admin_panel_settings</span>
+                                            <span>Admin PGGI</span>
+                                        </Link>
+                                    )}
+                                    <Link to="/account" className="header-avatar-btn" title="Mon compte">
+                                        {userInitial}
+                                    </Link>
+                                </>
                             ) : (
                                 <Link to="/login" className="header-login-btn">Connexion</Link>
                             )
@@ -109,6 +121,22 @@ export default function Header() {
                                 </span>
                             </Link>
                         ))}
+                        {isAdmin && (
+                            <Link
+                                to="/admin"
+                                className="bb-mobile-item"
+                                style={{ color: '#0284c7', fontWeight: 700 }}
+                                onClick={() => setDrawerOpen(false)}
+                            >
+                                <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                    <span className="material-symbols-outlined" style={{ fontSize: 20 }}>admin_panel_settings</span>
+                                    Administration PGGI
+                                </span>
+                                <span className="material-symbols-outlined bb-mobile-chevron" aria-hidden="true">
+                                    chevron_right
+                                </span>
+                            </Link>
+                        )}
                     </nav>
 
                     <div className="bb-mobile-footer">

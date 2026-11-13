@@ -26,6 +26,8 @@ import Cookies from './pages/Cookies';
 import Terms from './pages/Terms';
 import Legal from './pages/Legal';
 import NotFound from './pages/NotFound';
+import AdminPggi from './pages/AdminPggi';
+import AdminGuard from './components/AdminGuard';
 import { useAnalytics } from './hooks/useAnalytics';
 
 function AuthRedirectHandler() {
@@ -153,6 +155,9 @@ export default function App() {
                             <Route path="/test-pggi/:stage" element={<TestPggi />} />
                             <Route path="/account" element={<AccountV2 />} />
                             <Route path="/read/:bookId" element={<Reader />} />
+
+                            <Route path="/admin" element={<AdminGuard><AdminPggi /></AdminGuard>} />
+                            <Route path="/admin/pggi" element={<AdminGuard><AdminPggi /></AdminGuard>} />
 
                             <Route path="/login" element={<Login />} />
                             <Route path="/register" element={<Register />} />

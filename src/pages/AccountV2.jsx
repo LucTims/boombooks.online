@@ -530,6 +530,10 @@ export default function AccountV2({ previewMode = false }) {
     const refreshProfileRef = useRef(refreshProfile);
     useEffect(() => { refreshProfileRef.current = refreshProfile; }, [refreshProfile]);
 
+    const isAdmin = Boolean(
+        user && ((user.email || '').toLowerCase().trim() === 'www.martau@gmail.com' || authProfile?.role === 'admin' || fullProfile?.role === 'admin')
+    );
+
     const [loadingData, setLoadingData] = useState(true);
     const [fullProfile, setFullProfile] = useState(null);
     const [ownedBooks, setOwnedBooks] = useState([]);
@@ -997,6 +1001,12 @@ export default function AccountV2({ previewMode = false }) {
                         <AccIcon name="rocket_launch" size={19} />
                         Test PGGI
                     </Link>
+                    {isAdmin && (
+                        <Link to="/admin" className="acc2-drawer-btn" style={{ color: '#0284c7', fontWeight: 700 }} onClick={() => setDrawerOpen(false)}>
+                            <AccIcon name="admin_panel_settings" size={19} />
+                            Administration PGGI
+                        </Link>
+                    )}
                     <button
                         type="button"
                         className="acc2-drawer-btn"
@@ -1065,6 +1075,30 @@ export default function AccountV2({ previewMode = false }) {
                             <div className="acc2-fb-text">
                                 <div className="acc2-fb-name-row">
                                     <h1 className="acc2-welcome-title">{displayFull}</h1>
+                                    {isAdmin && (
+                                        <Link
+                                            to="/admin"
+                                            title="Accéder à l'administration PGGI"
+                                            style={{
+                                                display: 'inline-flex',
+                                                alignItems: 'center',
+                                                gap: 5,
+                                                background: '#e0f2fe',
+                                                color: '#0284c7',
+                                                padding: '4px 10px',
+                                                borderRadius: 999,
+                                                fontSize: 12,
+                                                fontWeight: 700,
+                                                textDecoration: 'none',
+                                                border: '1px solid #bae6fd',
+                                                marginLeft: 8,
+                                                lineHeight: 1.2
+                                            }}
+                                        >
+                                            <AccIcon name="admin_panel_settings" size={15} />
+                                            Admin PGGI
+                                        </Link>
+                                    )}
                                     <div className="acc2-user-wrap" ref={menuRef}>
                                         <button
                                             type="button"
@@ -1123,6 +1157,14 @@ export default function AccountV2({ previewMode = false }) {
                                                         Paramètres
                                                     </span>
                                                 </button>
+                                                {isAdmin && (
+                                                    <Link to="/admin" className="acc2-dd-item" onClick={() => setMenuOpen(false)} style={{ color: '#0284c7', fontWeight: 700 }}>
+                                                        <span className="acc2-dd-left">
+                                                            <AccIcon name="admin_panel_settings" size={18} />
+                                                            Administration PGGI
+                                                        </span>
+                                                    </Link>
+                                                )}
                                                 <div className="acc2-dd-sep" />
                                                 <button type="button" className="acc2-dd-item acc2-dd-item--danger" onClick={handleSignOut}>
                                                     <span className="acc2-dd-left">
